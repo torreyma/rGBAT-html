@@ -1,24 +1,59 @@
 #!/usr/bin/env Rscript
 
+# Load geocoder package:
+suppressMessages(library(rGBATl))
+
+# Get arguemnts from command line:
 args <- commandArgs(trailingOnly = TRUE)
 
 input_file <- args[1]
 output_file <- args[2]
-column_name <- args[3]
+address_col <- args[3]
 
 # Read the CSV file
 data <- read.csv(input_file, stringsAsFactors = FALSE)
 
-# Make sure the column exists
-if (!(column_name %in% names(data))) {
-  stop(paste("Column", column_name, "not found in CSV."))
+# Uncomment this section for testing locally line by line:
+suppressMessages(library(readr))
+input_file <- "~/Address-for-geocoding-NYC-dummy-data_with_ZIP.csv"
+data_uploaded <- read_csv(input_file, show_col_types = FALSE)
+output_file <- "processed.csv"
+address_col <- "Address"
+zip_col <- "ZIP_CODE"
+
+# Check that column exists
+if (!address_col %in% names(data_uploaded)) {
+  stop("Address column not found.")
 }
 
-# Simulate some processing: Add dummy Latitude and Longitude
-n <- nrow(data)
-set.seed(123)  # for reproducibility
-data$Latitude <- round(runif(n, min = -90, max = 90), 6)
-data$Longitude <- round(runif(n, min = -180, max = 180), 6)
+# Assume ZIP code column exists and is named exactly like this
+# TODO: Need to incorporate ZIP column selection into upload scripts
+if (!zip_col %in% names(data_uploaded)) {
+  stop("ZIP_CODE column is missing.")
+}
+
+# Create a unique ID to keep track of original rows
+data_uploaded$u_id <- seq_len(nrow(data_uploaded))
+
+# Set columns to retain and geocode
+source_cols <- c("u_id")
+geocode_fields <- c("F1E.longitude", "F1E.latitude",
+		    "F1E.output.ret_code", "F1E.output.msg")
+
+# Run the geocoder
+df_gc <- GBAT.process_freeform_addresses(
+  in_df = data_uploaded,
+  addr_col_name = address_col,
+  third_col_name = zip_col,
+  source_cols = source_cols,
+  geocode_fields = geocode_fields,
+  third_col_type = "zip_code",
+  return_type = "all",
+  GBAT_name = "24B" # this is the version that works with rGBATl currently.
+)
+
+# Join geocoded results back to original data
+df_final <- merge(data_uploaded, df_gc, by = "u_id", all.x = TRUE)
 
 # Write processed file
-write.csv(data, output_file, row.names = FALSE)
+write.csv(df_final, output_file, row.names = FALSE)
