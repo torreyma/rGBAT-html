@@ -20,6 +20,7 @@
 * Add selectable zip code column.
 * Excel instead of csv
 * Add other Geosupport field options
+* Add support for split addresses? (geosupport can handle it)
 * Add advanced address cleaning (rBES functions)
 
 ## License and credits
