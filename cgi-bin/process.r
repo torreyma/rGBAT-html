@@ -6,7 +6,7 @@ suppressMessages(library(rGBAT))
 # But if you are on a generic Linux machine with R, install the rGBATl package. See: https://github.com/torreyma/rGBATl
 	# Note that with rGBATl currently, you should install and use Geosupport 24B. Be sure to change GBAT_name in the function call.
 	# Then comment the rGBAT library line above and uncomment this one:
-	suppressMessages(library(rGBATl))
+	#suppressMessages(library(rGBATl))
 
 # Get arguemnts from command line:
 args <- commandArgs(trailingOnly = TRUE)
@@ -16,15 +16,15 @@ output_file <- args[2]
 address_col <- args[3]
 
 # Read the CSV file
-data <- read.csv(input_file, stringsAsFactors = FALSE)
+data_uploaded <- read.csv(input_file, stringsAsFactors = FALSE)
 
 # Uncomment this section for testing locally line by line:
-suppressMessages(library(readr))
-input_file <- "~/Actual-NYC-addresses-test-data_restaurants.csv"
-data_uploaded <- read_csv(input_file, show_col_types = FALSE)
-output_file <- "~/processed.csv"
-address_col <- "Address"
-zip_col <- "ZIP_CODE"
+# suppressMessages(library(readr))
+# input_file <- "~/Actual-NYC-addresses-test-data_restaurants.csv"
+# data_uploaded <- read_csv(input_file, show_col_types = FALSE)
+# output_file <- "~/processed.csv"
+# address_col <- "Address"
+# zip_col <- "ZIP_CODE"
 
 # Check that column exists
 if (!address_col %in% names(data_uploaded)) {
@@ -54,7 +54,7 @@ df_gc <- GBAT.process_freeform_addresses(
   geocode_fields = geocode_fields,
   third_col_type = "zip_code",
   return_type = "all",
-  GBAT_name = "24B" # Change this to 24B if using rGBATl (Version: 0.0.0.9000 2025-04-01)
+  GBAT_name = "24D" # Change this to 24B if using rGBATl Version: 0.0.0.9000 2025-04-01
 )
 
 # Join geocoded results back to original data
@@ -62,3 +62,5 @@ df_final <- merge(data_uploaded, df_gc, by = "u_id", all.x = TRUE)
 
 # Write processed file
 write.csv(df_final, output_file, row.names = FALSE)
+
+
