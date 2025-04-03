@@ -24,7 +24,6 @@ data_uploaded <- read.csv(input_file, stringsAsFactors = FALSE)
 # data_uploaded <- read_csv(input_file, show_col_types = FALSE)
 # output_file <- "~/processed.csv"
 # address_col <- "Address"
-# zip_col <- "ZIP_CODE"
 
 # Check that column exists
 if (!address_col %in% names(data_uploaded)) {
@@ -33,6 +32,8 @@ if (!address_col %in% names(data_uploaded)) {
 
 # Assume ZIP code column exists and is named exactly like this
 # TODO: Need to incorporate ZIP column selection into upload scripts
+# until you do, you need this next line:
+zip_col <- "ZIP_CODE"
 if (!zip_col %in% names(data_uploaded)) {
   stop("ZIP_CODE column is missing.")
 }
