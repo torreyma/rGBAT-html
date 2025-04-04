@@ -24,9 +24,11 @@
 * Add advanced address cleaning (rBES functions)
 
 ## License and credits
+* `Actual-NYC-addresses-test-data_restaurants.csv` is a (small) subset of restaurant inspection data from Open Data NYC that you can use for testing geocoding.
 * The original package, rGBAT, was written by Gretchen Culp (https://github.com/gmculp), initially exclusively for use on DOHMH's RHEL R server. (rGBATl simply extends its use to generalized Linux for the public.)
 * This package is released under an MIT license (see LICENSE file).
 * Geosupport Desktop Edition™ copyrighted by the New York City Department of City Planning. This product is freely available to the public with no limitations. 
+
 
 
 
