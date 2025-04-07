@@ -26,7 +26,7 @@ tail -n +"$csvoffset" "$TMP" | sed '/^--.*--$/q' > "$INPUT_FILE"
 
 # Return the CSV
 echo "Content-Type: text/csv"
-echo "Content-Disposition: attachment; filename=processed.csv"
+echo "Content-Disposition: attachment; filename=processed-R.csv"
 echo
 
 cat "$OUTPUT_FILE"
