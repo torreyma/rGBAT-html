@@ -1,5 +1,5 @@
 #!/bin/bash
-# handles file upload from upload.js on html page
+# handles file upload from upload-R.js on html page
 # Runs the R script that processes the file
 # got from ChatGPT 2025-03-12 14:00
 
